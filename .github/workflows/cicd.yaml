@@ -35,7 +35,7 @@ jobs:
     runs-on: self-hosted
     steps:
       -
-        name: Argocd app sync
+        name: Argocd install
         shell: bash
         run: |
           curl -k -sSL -o argocd https://argocd-server.argocd/download/argocd-linux-amd64
@@ -45,9 +45,10 @@ jobs:
         name: Argocd app sync
         shell: bash
         run: |
-          argocd login argocd-server.argocd \
+          argocd login argocd-server.argocd:443 \
             --insecure \
             --username admin \
-            --password ${{ secrets.ARGOCD_PASSWORD }} \
-            --grpc-web \
+            --password "${{ secrets.ARGOCD_PASSWORD }}" \
+            --grpc-web
           argocd app sync python-app      
+          if [ -z "${{ secrets.ARGOCD_PASSWORD }}" ]; then echo "SECRET IS EMPTY"; exit 1; fi argocd login ...
