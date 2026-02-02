@@ -38,14 +38,14 @@ jobs:
         name: Argocd app sync
         shell: bash
         run: |
-          curl -k -sSL -o argocd https://argocd.test.com.argocd/download/argocd-linux-amd64
+          curl -k -sSL -o argocd https://argocd-server.argocd/download/argocd-linux-amd64
           chmod +x argocd
           sudo mv ./argocd /usr/local/bin/argocd
       -
         name: Argocd app sync
         shell: bash
         run: |
-          argocd login argocd.test.com.argocd \
+          argocd login argocd-server.argocd \
             --insecure \
             --username admin \
             --password ${{ secrets.ARGOCD_PASSWORD }} \
