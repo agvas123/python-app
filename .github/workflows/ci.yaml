@@ -9,7 +9,7 @@ on:
 
 jobs:
   docker:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       -
         name: Login to Docker Hub
@@ -28,4 +28,5 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: alvarogv19/python-app:latest
+        #   tags: alvarogv19/python-app:latest
+          tags: alvarogv19/python-app:${{ github.sha }}
