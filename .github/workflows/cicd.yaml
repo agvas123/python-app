@@ -30,10 +30,37 @@ jobs:
           push: true
         #   tags: alvarogv19/python-app:latest
           tags: alvarogv19/python-app:${{ github.sha }}
+    outputs:
+      commit_id: ${{ github.sha }}
   cd:
     needs: ci
     runs-on: self-hosted
     steps:
+      - name: Clone repo
+        uses: actions/checkout@v3
+      - 
+        name: Modify values file
+        shell: bash
+        run: |
+          echo: ${{needs.ci.outputs.commit_id}}
+          # Actualizar e instalar python3 y pip
+          sudo apt-get update
+          sudo apt-get install -y python3 python3-pip
+          
+          # Instalar yq (la versión de python se llama habitualmente yq)
+          # Usamos --break-system-packages si el runner usa una distro moderna (Debian 12+)
+          pip3 install yq --break-system-packages || pip3 install yq
+          
+          # Verificar instalaciones
+          python3 --version
+          yq --version
+
+          yq -Yi '.image.tag = "${{needs.ci.outputs.commit_id}}"' charts/python-app/values.yaml
+      - 
+        name: Github push
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: 'Update values.yaml with commit ${{needs.ci.outputs.commit_id}}'
       -
         name: Argocd install
         shell: bash
