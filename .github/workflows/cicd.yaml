@@ -50,5 +50,4 @@ jobs:
             --username admin \
             --password "${{ secrets.ARGOCD_PASSWORD }}" \
             --grpc-web
-          argocd app sync python-app      
-          if [ -z "${{ secrets.ARGOCD_PASSWORD }}" ]; then echo "SECRET IS EMPTY"; exit 1; fi argocd login ...
+          argocd app sync python-app
