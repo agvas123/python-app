@@ -42,7 +42,7 @@ jobs:
         name: Modify values file
         shell: bash
         run: |
-          echo: ${{needs.ci.outputs.commit_id}}
+          echo "${{needs.ci.outputs.commit_id}}"
           # Actualizar e instalar python3 y pip
           sudo apt-get update
           sudo apt-get install -y python3 python3-pip
